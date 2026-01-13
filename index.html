@@ -1,731 +1,950 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechTalk - Crypto/Tech News</title>
-    <style>
-        :root {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f1f5f9;
-            --accent: #3b82f6;
-            --secondary: #64748b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --border: #334155;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid var(--border);
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .tagline {
-            color: var(--secondary);
-            font-size: 1.1rem;
-        }
-        
-        .controls {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin: 2rem 0;
-            padding: 1rem;
-            background: var(--card);
-            border-radius: 10px;
-        }
-        
-        .category-btn {
-            padding: 0.5rem 1.5rem;
-            border: none;
-            background: var(--border);
-            color: var(--text);
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-        
-        .category-btn:hover {
-            background: var(--secondary);
-        }
-        
-        .category-btn.active {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .refresh-btn {
-            margin-left: auto;
-            padding: 0.5rem 1.5rem;
-            background: var(--success);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        
-        .refresh-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .articles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-        
-        .article-card {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-            transition: transform 0.2s, border-color 0.2s;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .article-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent);
-        }
-        
-        .article-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 1rem;
-        }
-        
-        .source-tag {
-            background: var(--accent);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        
-        .time-ago {
-            color: var(--secondary);
-            font-size: 0.9rem;
-        }
-        
-        .article-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            line-height: 1.4;
-            flex-grow: 1;
-        }
-        
-        .article-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: auto;
-        }
-        
-        .article-link:hover {
-            text-decoration: underline;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            grid-column: 1 / -1;
-        }
-        
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .error {
-            background: var(--danger);
-            color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            display: none;
-        }
-        
-        footer {
-            margin-top: 3rem;
-            text-align: center;
-            color: var(--secondary);
-            font-size: 0.9rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-        }
-        
-        @media (max-width: 768px) {
-            .articles-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .controls {
-                flex-direction: column;
-            }
-            
-            .refresh-btn {
-                margin-left: 0;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechTalk - Crypto/Tech News</title>
+<style>
+:root {
+--bg: #0f172a;
+--card: #1e293b;
+--text: #f1f5f9;
+--accent: #3b82f6;
+--secondary: #64748b;
+--success: #10b981;
+--danger: #ef4444;
+--border: #334155;
+}
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+background: var(--bg);
+color: var(--text);
+line-height: 1.6;
+padding: 20px;
+max-width: 1400px;
+margin: 0 auto;
+display: grid;
+grid-template-columns: 1fr auto 1fr;
+gap: 20px;
+position: relative;
+}
+
+.main-content {
+grid-column: 2;
+width: 100%;
+max-width: 1200px;
+}
+
+/* Left Sidebar Ads */
+.left-sidebar {
+grid-column: 1;
+position: sticky;
+top: 20px;
+height: fit-content;
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
+
+/* Right Sidebar Ads */
+.right-sidebar {
+grid-column: 3;
+position: sticky;
+top: 20px;
+height: fit-content;
+display: flex;
+flex-direction: column;
+gap: 20px;
+}
+
+/* Ad Frame Styles */
+.ad-frame {
+position: relative;
+z-index: 99998;
+margin-bottom: 20px;
+}
+
+.ad-frame iframe {
+border: 0;
+padding: 0;
+width: 100%;
+height: auto;
+overflow: hidden;
+display: block;
+margin: 0;
+}
+
+/* Vertical Ad Styles */
+.vertical-ad {
+width: 160px;
+height: 600px;
+margin: 0 auto;
+}
+
+.vertical-ad iframe {
+height: 600px !important;
+}
+
+/* Medium Rectangle Ads */
+.rectangle-ad {
+width: 300px;
+height: 250px;
+margin: 0 auto;
+}
+
+.rectangle-ad iframe {
+height: 250px !important;
+}
+
+/* Leaderboard Ad (top) */
+.leaderboard-ad {
+width: 100%;
+max-width: 728px;
+height: 90px;
+margin: 0 auto 30px;
+}
+
+.leaderboard-ad iframe {
+height: 90px !important;
+width: 100% !important;
+}
+
+/* In-content Ad */
+.in-content-ad {
+width: 100%;
+max-width: 728px;
+height: 90px;
+margin: 30px auto;
+grid-column: 1 / -1;
+}
+
+.in-content-ad iframe {
+height: 90px !important;
+width: 100% !important;
+}
+
+/* Bottom Ad Container */
+.bottom-ads {
+grid-column: 1 / -1;
+display: flex;
+justify-content: center;
+gap: 20px;
+flex-wrap: wrap;
+margin-top: 30px;
+}
+
+.bottom-ad {
+width: 728px;
+height: 90px;
+}
+
+.bottom-ad iframe {
+height: 90px !important;
+width: 100% !important;
+}
+
+/* Header adjustments */
+header {
+text-align: center;
+margin-bottom: 2rem;
+padding-bottom: 1rem;
+border-bottom: 2px solid var(--border);
+}
+
+h1 {
+font-size: 2.5rem;
+margin-bottom: 0.5rem;
+background: linear-gradient(135deg, var(--accent), #8b5cf6);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.tagline {
+color: var(--secondary);
+font-size: 1.1rem;
+}
+
+.controls {
+display: flex;
+gap: 1rem;
+flex-wrap: wrap;
+margin: 2rem 0;
+padding: 1rem;
+background: var(--card);
+border-radius: 10px;
+}
+
+.category-btn {
+padding: 0.5rem 1.5rem;
+border: none;
+background: var(--border);
+color: var(--text);
+border-radius: 20px;
+cursor: pointer;
+transition: all 0.2s;
+font-weight: 500;
+}
+
+.category-btn:hover {
+background: var(--secondary);
+}
+
+.category-btn.active {
+background: var(--accent);
+color: white;
+}
+
+.refresh-btn {
+margin-left: auto;
+padding: 0.5rem 1.5rem;
+background: var(--success);
+color: white;
+border: none;
+border-radius: 6px;
+cursor: pointer;
+font-weight: 500;
+}
+
+.refresh-btn:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
+
+.articles-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+gap: 1.5rem;
+margin-top: 1rem;
+}
+
+.article-card {
+background: var(--card);
+border-radius: 12px;
+padding: 1.5rem;
+border: 1px solid var(--border);
+transition: transform 0.2s, border-color 0.2s;
+display: flex;
+flex-direction: column;
+}
+
+.article-card:hover {
+transform: translateY(-2px);
+border-color: var(--accent);
+}
+
+.article-header {
+display: flex;
+justify-content: space-between;
+align-items: start;
+margin-bottom: 1rem;
+}
+
+.source-tag {
+background: var(--accent);
+color: white;
+padding: 0.3rem 0.8rem;
+border-radius: 20px;
+font-size: 0.85rem;
+font-weight: 600;
+}
+
+.time-ago {
+color: var(--secondary);
+font-size: 0.9rem;
+}
+
+.article-title {
+font-size: 1.2rem;
+font-weight: 600;
+margin-bottom: 1rem;
+line-height: 1.4;
+flex-grow: 1;
+}
+
+.article-link {
+color: var(--accent);
+text-decoration: none;
+font-weight: 500;
+display: inline-flex;
+align-items: center;
+gap: 0.5rem;
+margin-top: auto;
+}
+
+.article-link:hover {
+text-decoration: underline;
+}
+
+.loading {
+text-align: center;
+padding: 3rem;
+grid-column: 1 / -1;
+}
+
+.loading-spinner {
+width: 40px;
+height: 40px;
+border: 3px solid var(--border);
+border-top-color: var(--accent);
+border-radius: 50%;
+animation: spin 1s linear infinite;
+margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+to { transform: rotate(360deg); }
+}
+
+.error {
+background: var(--danger);
+color: white;
+padding: 1rem;
+border-radius: 8px;
+margin: 1rem 0;
+display: none;
+grid-column: 1 / -1;
+}
+
+footer {
+margin-top: 3rem;
+text-align: center;
+color: var(--secondary);
+font-size: 0.9rem;
+padding-top: 1rem;
+border-top: 1px solid var(--border);
+grid-column: 1 / -1;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+body {
+grid-template-columns: 1fr;
+gap: 10px;
+}
+
+.main-content {
+grid-column: 1;
+}
+
+.left-sidebar, .right-sidebar {
+display: none;
+}
+}
+
+@media (max-width: 768px) {
+body {
+padding: 10px;
+}
+
+.articles-grid {
+grid-template-columns: 1fr;
+}
+
+.controls {
+flex-direction: column;
+}
+
+.refresh-btn {
+margin-left: 0;
+}
+
+.leaderboard-ad,
+.in-content-ad,
+.bottom-ad {
+max-width: 320px;
+height: 100px;
+}
+
+.leaderboard-ad iframe,
+.in-content-ad iframe,
+.bottom-ad iframe {
+height: 100px !important;
+}
+
+.bottom-ads {
+flex-direction: column;
+align-items: center;
+}
+}
+
+@media (min-width: 1201px) and (max-width: 1400px) {
+.left-sidebar, .right-sidebar {
+width: 180px;
+}
+}
+</style>
 </head>
 <body>
-    <header>
-        <h1>TechTalk</h1>
-        <p class="tagline">Live crypto & tech news from top sources</p>
-    </header>
-    
-    <div class="controls">
-        <button class="category-btn active" data-category="all">All News</button>
-        <button class="category-btn" data-category="crypto">Crypto</button>
-        <button class="category-btn" data-category="tech">Tech</button>
-        <button class="category-btn" data-category="ai">AI</button>
-        <button class="category-btn" data-category="dev">Dev</button>
-        <button class="refresh-btn" id="refreshBtn">Refresh News</button>
-    </div>
-    
-    <div class="error" id="errorMessage"></div>
-    
-    <div class="articles-grid" id="articlesContainer">
-        <div class="loading">
-            <div class="loading-spinner"></div>
-            <p>Fetching latest headlines...</p>
-        </div>
-    </div>
-    
-    <footer>
-        <p>TechTalk Aggregator • Updates every 5 minutes • Source links open in new tab</p>
-        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Powered by RSS feeds from top publications</p>
-    </footer>
+<!-- Left Sidebar Ads -->
+<div class="left-sidebar">
+<div class="ad-frame vertical-ad">
+<iframe data-aa='2424067' src='//acceptable.a-ads.com/2424067/?size=Vertical' scrolling='no' title='advertisement'></iframe>
+</div>
+<div class="ad-frame rectangle-ad">
+<iframe data-aa='2424068' src='//acceptable.a-ads.com/2424068/?size=Medium_Rectangle' scrolling='no' title='advertisement'></iframe>
+</div>
+<div class="ad-frame vertical-ad">
+<iframe data-aa='2424069' src='//acceptable.a-ads.com/2424069/?size=Vertical' scrolling='no' title='advertisement'></iframe>
+</div>
+</div>
 
-    <script>
-        // Configuration
-        const NEWS_SOURCES = {
-            crypto: [
-                {
-                    name: "CoinDesk",
-                    url: "https://www.coindesk.com/arc/outboundfeeds/rss/",
-                    category: "crypto",
-                    getFeed: async () => {
-                        const rss = await fetchRSS("https://www.coindesk.com/arc/outboundfeeds/rss/");
-                        return parseRSS(rss);
-                    }
-                },
-                {
-                    name: "CoinTelegraph",
-                    url: "https://cointelegraph.com/rss",
-                    category: "crypto",
-                    getFeed: async () => {
-                        try {
-                            const html = await fetchHTML("https://cointelegraph.com/");
-                            return parseCointelegraph(html);
-                        } catch (e) {
-                            return fallbackArticles("CoinTelegraph", "crypto");
-                        }
-                    }
-                },
-                {
-                    name: "The Block",
-                    url: "https://www.theblock.co/rss/",
-                    category: "crypto",
-                    getFeed: async () => {
-                        const rss = await fetchRSS("https://www.theblock.co/rss/");
-                        return parseRSS(rss);
-                    }
-                }
-            ],
-            tech: [
-                {
-                    name: "TechCrunch",
-                    url: "https://techcrunch.com/feed/",
-                    category: "tech",
-                    getFeed: async () => {
-                        const rss = await fetchRSS("https://techcrunch.com/feed/");
-                        return parseRSS(rss);
-                    }
-                },
-                {
-                    name: "Hacker News",
-                    url: "https://news.ycombinator.com/",
-                    category: "dev",
-                    getFeed: async () => {
-                        const html = await fetchHTML("https://news.ycombinator.com/");
-                        return parseHackerNews(html);
-                    }
-                },
-                {
-                    name: "Ars Technica",
-                    url: "https://feeds.arstechnica.com/arstechnica/index",
-                    category: "tech",
-                    getFeed: async () => {
-                        const rss = await fetchRSS("https://feeds.arstechnica.com/arstechnica/index");
-                        return parseRSS(rss);
-                    }
-                }
-            ],
-            ai: [
-                {
-                    name: "OpenAI Blog",
-                    url: "https://openai.com/blog/",
-                    category: "ai",
-                    getFeed: async () => {
-                        try {
-                            const html = await fetchHTML("https://openai.com/blog/");
-                            return parseOpenAI(html);
-                        } catch (e) {
-                            return fallbackArticles("OpenAI", "ai");
-                        }
-                    }
-                },
-                {
-                    name: "Anthropic Blog",
-                    url: "https://www.anthropic.com/news",
-                    category: "ai",
-                    getFeed: async () => {
-                        try {
-                            const html = await fetchHTML("https://www.anthropic.com/news");
-                            return parseAnthropic(html);
-                        } catch (e) {
-                            return fallbackArticles("Anthropic", "ai");
-                        }
-                    }
-                }
-            ]
-        };
+<!-- Main Content -->
+<div class="main-content">
+<!-- Top Leaderboard Ad -->
+<div class="ad-frame leaderboard-ad">
+<iframe data-aa='2424066' src='//acceptable.a-ads.com/2424066/?size=Leaderboard' scrolling='no' title='advertisement'></iframe>
+</div>
 
-        // CORS proxy - using public proxies (fallback chain)
-        const CORS_PROXIES = [
-            'https://api.allorigins.win/raw?url=',
-            'https://corsproxy.io/?',
-            'https://api.codetabs.com/v1/proxy?quest='
-        ];
+<header>
+<h1>TechTalk</h1>
+<p class="tagline">Live crypto & tech news from top sources</p>
+</header>
 
-        // State
-        let allArticles = [];
-        let currentCategory = 'all';
+<div class="controls">
+<button class="category-btn active" data-category="all">All News</button>
+<button class="category-btn" data-category="crypto">Crypto</button>
+<button class="category-btn" data-category="tech">Tech</button>
+<button class="category-btn" data-category="ai">AI</button>
+<button class="category-btn" data-category="dev">Dev</button>
+<button class="refresh-btn" id="refreshBtn">Refresh News</button>
+</div>
 
-        // DOM Elements
-        const articlesContainer = document.getElementById('articlesContainer');
-        const refreshBtn = document.getElementById('refreshBtn');
-        const errorMessage = document.getElementById('errorMessage');
-        const categoryBtns = document.querySelectorAll('.category-btn');
+<div class="error" id="errorMessage"></div>
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', loadNews);
+<!-- In-content Ad (after controls) -->
+<div class="ad-frame in-content-ad">
+<iframe data-aa='2424070' src='//acceptable.a-ads.com/2424070/?size=Leaderboard' scrolling='no' title='advertisement'></iframe>
+</div>
 
-        // Event Listeners
-        refreshBtn.addEventListener('click', loadNews);
-        
-        categoryBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                categoryBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentCategory = btn.dataset.category;
-                filterArticles();
-            });
-        });
+<div class="articles-grid" id="articlesContainer">
+<div class="loading">
+<div class="loading-spinner"></div>
+<p>Fetching latest headlines...</p>
+</div>
+</div>
 
-        // Main function to load news
-        async function loadNews() {
-            refreshBtn.disabled = true;
-            refreshBtn.textContent = 'Loading...';
-            showLoading();
-            hideError();
+<!-- In-content Ad (middle of articles) -->
+<div class="ad-frame in-content-ad">
+<iframe data-aa='2424071' src='//acceptable.a-ads.com/2424071/?size=Leaderboard' scrolling='no' title='advertisement'></iframe>
+</div>
 
-            try {
-                const promises = [];
-                
-                // Fetch from all sources
-                for (const category in NEWS_SOURCES) {
-                    for (const source of NEWS_SOURCES[category]) {
-                        promises.push(
-                            source.getFeed()
-                                .then(articles => {
-                                    return articles.map(article => ({
-                                        ...article,
-                                        source: source.name,
-                                        category: source.category,
-                                        timestamp: new Date().getTime()
-                                    }));
-                                })
-                                .catch(error => {
-                                    console.error(`Error fetching ${source.name}:`, error);
-                                    return [];
-                                })
-                        );
-                    }
-                }
+<footer>
+<p>TechTalk Aggregator • Updates every 5 minutes • Source links open in new tab</p>
+<p style="margin-top: 0.5rem; font-size: 0.8rem;">Powered by RSS feeds from top publications</p>
+</footer>
+</div>
 
-                const results = await Promise.allSettled(promises);
-                
-                // Combine all articles
-                allArticles = [];
-                results.forEach(result => {
-                    if (result.status === 'fulfilled' && result.value) {
-                        allArticles.push(...result.value);
-                    }
-                });
+<!-- Right Sidebar Ads -->
+<div class="right-sidebar">
+<div class="ad-frame vertical-ad">
+<iframe data-aa='2424072' src='//acceptable.a-ads.com/2424072/?size=Vertical' scrolling='no' title='advertisement'></iframe>
+</div>
+<div class="ad-frame rectangle-ad">
+<iframe data-aa='2424073' src='//acceptable.a-ads.com/2424073/?size=Medium_Rectangle' scrolling='no' title='advertisement'></iframe>
+</div>
+<div class="ad-frame vertical-ad">
+<iframe data-aa='2424074' src='//acceptable.a-ads.com/2424074/?size=Vertical' scrolling='no' title='advertisement'></iframe>
+</div>
+</div>
 
-                // Sort by timestamp (newest first)
-                allArticles.sort((a, b) => b.timestamp - a.timestamp);
-                
-                // Remove duplicates based on title
-                allArticles = removeDuplicates(allArticles);
-                
-                renderArticles();
-                
-            } catch (error) {
-                console.error('Error loading news:', error);
-                showError('Failed to load news. Trying fallback data...');
-                loadFallbackData();
-            } finally {
-                refreshBtn.disabled = false;
-                refreshBtn.textContent = 'Refresh News';
-            }
-        }
+<!-- Bottom Ads -->
+<div class="bottom-ads">
+<div class="ad-frame bottom-ad">
+<iframe data-aa='2424075' src='//acceptable.a-ads.com/2424075/?size=Leaderboard' scrolling='no' title='advertisement'></iframe>
+</div>
+<div class="ad-frame bottom-ad">
+<iframe data-aa='2424076' src='//acceptable.a-ads.com/2424076/?size=Leaderboard' scrolling='no' title='advertisement'></iframe>
+</div>
+</div>
 
-        // Fetch with CORS proxy
-        async function fetchWithProxy(url) {
-            let lastError;
-            
-            for (const proxy of CORS_PROXIES) {
-                try {
-                    const proxyUrl = proxy + encodeURIComponent(url);
-                    const response = await fetch(proxyUrl, {
-                        headers: {
-                            'Accept': 'application/xml, text/html, application/json',
-                            'User-Agent': 'TechTalkAggregator/1.0'
-                        }
-                    });
-                    
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    
-                    return await response.text();
-                } catch (error) {
-                    lastError = error;
-                    continue; // Try next proxy
-                }
-            }
-            
-            throw lastError;
-        }
+<script>
+// Configuration
+const NEWS_SOURCES = {
+crypto: [
+{
+name: "CoinDesk",
+url: "https://www.coindesk.com/arc/outboundfeeds/rss/",
+category: "crypto",
+getFeed: async () => {
+const rss = await fetchRSS("https://www.coindesk.com/arc/outboundfeeds/rss/");
+return parseRSS(rss);
+}
+},
+{
+name: "CoinTelegraph",
+url: "https://cointelegraph.com/rss",
+category: "crypto",
+getFeed: async () => {
+try {
+const html = await fetchHTML("https://cointelegraph.com/");
+return parseCointelegraph(html);
+} catch (e) {
+return fallbackArticles("CoinTelegraph", "crypto");
+}
+}
+},
+{
+name: "The Block",
+url: "https://www.theblock.co/rss/",
+category: "crypto",
+getFeed: async () => {
+const rss = await fetchRSS("https://www.theblock.co/rss/");
+return parseRSS(rss);
+}
+}
+],
+tech: [
+{
+name: "TechCrunch",
+url: "https://techcrunch.com/feed/",
+category: "tech",
+getFeed: async () => {
+const rss = await fetchRSS("https://techcrunch.com/feed/");
+return parseRSS(rss);
+}
+},
+{
+name: "Hacker News",
+url: "https://news.ycombinator.com/",
+category: "dev",
+getFeed: async () => {
+const html = await fetchHTML("https://news.ycombinator.com/");
+return parseHackerNews(html);
+}
+},
+{
+name: "Ars Technica",
+url: "https://feeds.arstechnica.com/arstechnica/index",
+category: "tech",
+getFeed: async () => {
+const rss = await fetchRSS("https://feeds.arstechnica.com/arstechnica/index");
+return parseRSS(rss);
+}
+}
+],
+ai: [
+{
+name: "OpenAI Blog",
+url: "https://openai.com/blog/",
+category: "ai",
+getFeed: async () => {
+try {
+const html = await fetchHTML("https://openai.com/blog/");
+return parseOpenAI(html);
+} catch (e) {
+return fallbackArticles("OpenAI", "ai");
+}
+}
+},
+{
+name: "Anthropic Blog",
+url: "https://www.anthropic.com/news",
+category: "ai",
+getFeed: async () => {
+try {
+const html = await fetchHTML("https://www.anthropic.com/news");
+return parseAnthropic(html);
+} catch (e) {
+return fallbackArticles("Anthropic", "ai");
+}
+}
+}
+]
+};
 
-        async function fetchRSS(url) {
-            return await fetchWithProxy(url);
-        }
+// CORS proxy - using public proxies (fallback chain)
+const CORS_PROXIES = [
+'https://api.allorigins.win/raw?url=',
+'https://corsproxy.io/?',
+'https://api.codetabs.com/v1/proxy?quest='
+];
 
-        async function fetchHTML(url) {
-            return await fetchWithProxy(url);
-        }
+// State
+let allArticles = [];
+let currentCategory = 'all';
 
-        // RSS Parser
-        function parseRSS(xmlText) {
-            const articles = [];
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-            
-            const items = xmlDoc.querySelectorAll('item, entry');
-            
-            items.forEach((item, index) => {
-                if (index >= 5) return; // Limit to 5 per source
-                
-                const title = item.querySelector('title')?.textContent || 'No title';
-                const link = item.querySelector('link')?.textContent || 
-                            item.querySelector('link')?.getAttribute('href') || '#';
-                
-                if (title && link !== '#') {
-                    articles.push({
-                        title: cleanTitle(title),
-                        link: link,
-                        timeAgo: 'Recently'
-                    });
-                }
-            });
-            
-            return articles;
-        }
+// DOM Elements
+const articlesContainer = document.getElementById('articlesContainer');
+const refreshBtn = document.getElementById('refreshBtn');
+const errorMessage = document.getElementById('errorMessage');
+const categoryBtns = document.querySelectorAll('.category-btn');
 
-        // Custom parsers for sites without RSS
-        function parseHackerNews(html) {
-            const articles = [];
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            
-            const rows = doc.querySelectorAll('.athing');
-            
-            rows.forEach((row, index) => {
-                if (index >= 10) return;
-                
-                const titleElem = row.querySelector('.titleline a');
-                if (titleElem) {
-                    articles.push({
-                        title: titleElem.textContent,
-                        link: titleElem.href,
-                        timeAgo: 'Recently'
-                    });
-                }
-            });
-            
-            return articles;
-        }
+// Initialize
+document.addEventListener('DOMContentLoaded', loadNews);
 
-        function parseCointelegraph(html) {
-            const articles = [];
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            
-            const headlines = doc.querySelectorAll('.post-card__title');
-            
-            headlines.forEach((headline, index) => {
-                if (index >= 5) return;
-                
-                const link = headline.closest('a');
-                if (link && headline.textContent) {
-                    articles.push({
-                        title: headline.textContent.trim(),
-                        link: 'https://cointelegraph.com' + link.getAttribute('href'),
-                        timeAgo: 'Recently'
-                    });
-                }
-            });
-            
-            return articles;
-        }
+// Event Listeners
+refreshBtn.addEventListener('click', loadNews);
 
-        function parseOpenAI(html) {
-            const articles = [];
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            
-            const posts = doc.querySelectorAll('.ui-post-card');
-            
-            posts.forEach((post, index) => {
-                if (index >= 3) return;
-                
-                const title = post.querySelector('h3');
-                const link = post.querySelector('a');
-                
-                if (title && link) {
-                    articles.push({
-                        title: title.textContent.trim(),
-                        link: 'https://openai.com' + link.getAttribute('href'),
-                        timeAgo: 'Recently'
-                    });
-                }
-            });
-            
-            return articles;
-        }
+categoryBtns.forEach(btn => {
+btn.addEventListener('click', () => {
+categoryBtns.forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+currentCategory = btn.dataset.category;
+filterArticles();
+});
+});
 
-        function parseAnthropic(html) {
-            const articles = [];
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            
-            const posts = doc.querySelectorAll('.blog-post-preview');
-            
-            posts.forEach((post, index) => {
-                if (index >= 3) return;
-                
-                const title = post.querySelector('h3');
-                const link = post.querySelector('a');
-                
-                if (title && link) {
-                    articles.push({
-                        title: title.textContent.trim(),
-                        link: 'https://www.anthropic.com' + link.getAttribute('href'),
-                        timeAgo: 'Recently'
-                    });
-                }
-            });
-            
-            return articles;
-        }
+// Main function to load news
+async function loadNews() {
+refreshBtn.disabled = true;
+refreshBtn.textContent = 'Loading...';
+showLoading();
+hideError();
 
-        // Fallback data if fetching fails
-        function fallbackArticles(source, category) {
-            const fallbacks = {
-                crypto: [
-                    "Bitcoin ETF sees record inflows as institutions pile in",
-                    "Ethereum Dencun upgrade goes live, reducing L2 fees",
-                    "Solana network activity surges amid memecoin frenzy",
-                    "DeFi protocols hit $100B TVL milestone",
-                    "Regulatory clarity emerging for stablecoins"
-                ],
-                tech: [
-                    "Apple unveils M4 chip with focus on AI performance",
-                    "Microsoft launches new Copilot Pro subscription",
-                    "Google's Gemini AI now integrated across Workspace",
-                    "Meta releases open-source Llama 3 model",
-                    "Amazon launches AI shopping assistant"
-                ],
-                ai: [
-                    "OpenAI releases GPT-4.5 with multimodal enhancements",
-                    "Anthropic's Claude 3 outperforms competitors on benchmarks",
-                    "AI agents can now complete complex tasks autonomously",
-                    "Multimodal AI models advance in reasoning capabilities",
-                    "Open-source AI models closing gap with proprietary ones"
-                ],
-                dev: [
-                    "Rust named most loved language for 8th year in row",
-                    "Node.js 22 released with WebSocket support",
-                    "VSCode's new AI pair programming feature in beta",
-                    "WebAssembly gaining traction for high-performance web apps",
-                    "New JavaScript features in ES2024 specification"
-                ]
-            };
-            
-            return fallbacks[category]?.map((title, index) => ({
-                title: title,
-                link: `https://${source.toLowerCase()}.com/news/${index}`,
-                timeAgo: 'Recently',
-                isFallback: true
-            })) || [];
-        }
+try {
+const promises = [];
 
-        function loadFallbackData() {
-            allArticles = [];
-            
-            for (const category in NEWS_SOURCES) {
-                for (const source of NEWS_SOURCES[category]) {
-                    const articles = fallbackArticles(source.name, source.category);
-                    allArticles.push(...articles.map(article => ({
-                        ...article,
-                        source: source.name,
-                        category: source.category,
-                        timestamp: new Date().getTime() - Math.random() * 1000000
-                    })));
-                }
-            }
-            
-            renderArticles();
-        }
+// Fetch from all sources
+for (const category in NEWS_SOURCES) {
+for (const source of NEWS_SOURCES[category]) {
+promises.push(
+source.getFeed()
+.then(articles => {
+return articles.map(article => ({
+...article,
+source: source.name,
+category: source.category,
+timestamp: new Date().getTime()
+}));
+})
+.catch(error => {
+console.error(`Error fetching ${source.name}:`, error);
+return [];
+})
+);
+}
+}
 
-        // Render articles to DOM
-        function renderArticles() {
-            filterArticles();
-        }
+const results = await Promise.allSettled(promises);
 
-        function filterArticles() {
-            const filtered = currentCategory === 'all' 
-                ? allArticles 
-                : allArticles.filter(article => article.category === currentCategory);
-            
-            if (filtered.length === 0) {
-                articlesContainer.innerHTML = `
-                    <div class="loading">
-                        <p>No articles found for this category.</p>
-                        <button class="refresh-btn" onclick="loadNews()" style="margin-top: 1rem;">Try Again</button>
-                    </div>
-                `;
-                return;
-            }
-            
-            articlesContainer.innerHTML = filtered.map(article => `
-                <div class="article-card">
-                    <div class="article-header">
-                        <span class="source-tag">${article.source}</span>
-                        <span class="time-ago">${article.timeAgo}</span>
-                    </div>
-                    <h3 class="article-title">${article.title}</h3>
-                    <a href="${article.link}" class="article-link" target="_blank" rel="noopener noreferrer">
-                        Read full story
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15 3 21 3 21 9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                    </a>
-                </div>
-            `).join('');
-        }
+// Combine all articles
+allArticles = [];
+results.forEach(result => {
+if (result.status === 'fulfilled' && result.value) {
+allArticles.push(...result.value);
+}
+});
 
-        function showLoading() {
-            articlesContainer.innerHTML = `
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    <p>Fetching latest headlines from ${Object.values(NEWS_SOURCES).flat().length} sources...</p>
-                </div>
-            `;
-        }
+// Sort by timestamp (newest first)
+allArticles.sort((a, b) => b.timestamp - a.timestamp);
 
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-        }
+// Remove duplicates based on title
+allArticles = removeDuplicates(allArticles);
 
-        function hideError() {
-            errorMessage.style.display = 'none';
-        }
+renderArticles();
 
-        // Utility functions
-        function cleanTitle(title) {
-            return title
-                .replace(/<[^>]*>/g, '')
-                .replace(/\[.*?\]/g, '')
-                .replace(/^[^a-zA-Z0-9]+/, '')
-                .trim();
-        }
+} catch (error) {
+console.error('Error loading news:', error);
+showError('Failed to load news. Trying fallback data...');
+loadFallbackData();
+} finally {
+refreshBtn.disabled = false;
+refreshBtn.textContent = 'Refresh News';
+}
+}
 
-        function removeDuplicates(articles) {
-            const seen = new Set();
-            return articles.filter(article => {
-                const key = article.title.toLowerCase();
-                if (seen.has(key)) return false;
-                seen.add(key);
-                return true;
-            });
-        }
+// Fetch with CORS proxy
+async function fetchWithProxy(url) {
+let lastError;
 
-        // Auto-refresh every 5 minutes
-        setInterval(loadNews, 5 * 60 * 1000);
-    </script>
+for (const proxy of CORS_PROXIES) {
+try {
+const proxyUrl = proxy + encodeURIComponent(url);
+const response = await fetch(proxyUrl, {
+headers: {
+'Accept': 'application/xml, text/html, application/json',
+'User-Agent': 'TechTalkAggregator/1.0'
+}
+});
+
+if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+return await response.text();
+} catch (error) {
+lastError = error;
+continue; // Try next proxy
+}
+}
+
+throw lastError;
+}
+
+async function fetchRSS(url) {
+return await fetchWithProxy(url);
+}
+
+async function fetchHTML(url) {
+return await fetchWithProxy(url);
+}
+
+// RSS Parser
+function parseRSS(xmlText) {
+const articles = [];
+const parser = new DOMParser();
+const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+
+const items = xmlDoc.querySelectorAll('item, entry');
+
+items.forEach((item, index) => {
+if (index >= 5) return; // Limit to 5 per source
+
+const title = item.querySelector('title')?.textContent || 'No title';
+const link = item.querySelector('link')?.textContent ||
+item.querySelector('link')?.getAttribute('href') || '#';
+
+if (title && link !== '#') {
+articles.push({
+title: cleanTitle(title),
+link: link,
+timeAgo: 'Recently'
+});
+}
+});
+
+return articles;
+}
+
+// Custom parsers for sites without RSS
+function parseHackerNews(html) {
+const articles = [];
+const parser = new DOMParser();
+const doc = parser.parseFromString(html, 'text/html');
+
+const rows = doc.querySelectorAll('.athing');
+
+rows.forEach((row, index) => {
+if (index >= 10) return;
+
+const titleElem = row.querySelector('.titleline a');
+if (titleElem) {
+articles.push({
+title: titleElem.textContent,
+link: titleElem.href,
+timeAgo: 'Recently'
+});
+}
+});
+
+return articles;
+}
+
+function parseCointelegraph(html) {
+const articles = [];
+const parser = new DOMParser();
+const doc = parser.parseFromString(html, 'text/html');
+
+const headlines = doc.querySelectorAll('.post-card__title');
+
+headlines.forEach((headline, index) => {
+if (index >= 5) return;
+
+const link = headline.closest('a');
+if (link && headline.textContent) {
+articles.push({
+title: headline.textContent.trim(),
+link: 'https://cointelegraph.com' + link.getAttribute('href'),
+timeAgo: 'Recently'
+});
+}
+});
+
+return articles;
+}
+
+function parseOpenAI(html) {
+const articles = [];
+const parser = new DOMParser();
+const doc = parser.parseFromString(html, 'text/html');
+
+const posts = doc.querySelectorAll('.ui-post-card');
+
+posts.forEach((post, index) => {
+if (index >= 3) return;
+
+const title = post.querySelector('h3');
+const link = post.querySelector('a');
+
+if (title && link) {
+articles.push({
+title: title.textContent.trim(),
+link: 'https://openai.com' + link.getAttribute('href'),
+timeAgo: 'Recently'
+});
+}
+});
+
+return articles;
+}
+
+function parseAnthropic(html) {
+const articles = [];
+const parser = new DOMParser();
+const doc = parser.parseFromString(html, 'text/html');
+
+const posts = doc.querySelectorAll('.blog-post-preview');
+
+posts.forEach((post, index) => {
+if (index >= 3) return;
+
+const title = post.querySelector('h3');
+const link = post.querySelector('a');
+
+if (title && link) {
+articles.push({
+title: title.textContent.trim(),
+link: 'https://www.anthropic.com' + link.getAttribute('href'),
+timeAgo: 'Recently'
+});
+}
+});
+
+return articles;
+}
+
+// Fallback data if fetching fails
+function fallbackArticles(source, category) {
+const fallbacks = {
+crypto: [
+"Bitcoin ETF sees record inflows as institutions pile in",
+"Ethereum Dencun upgrade goes live, reducing L2 fees",
+"Solana network activity surges amid memecoin frenzy",
+"DeFi protocols hit $100B TVL milestone",
+"Regulatory clarity emerging for stablecoins"
+],
+tech: [
+"Apple unveils M4 chip with focus on AI performance",
+"Microsoft launches new Copilot Pro subscription",
+"Google's Gemini AI now integrated across Workspace",
+"Meta releases open-source Llama 3 model",
+"Amazon launches AI shopping assistant"
+],
+ai: [
+"OpenAI releases GPT-4.5 with multimodal enhancements",
+"Anthropic's Claude 3 outperforms competitors on benchmarks",
+"AI agents can now complete complex tasks autonomously",
+"Multimodal AI models advance in reasoning capabilities",
+"Open-source AI models closing gap with proprietary ones"
+],
+dev: [
+"Rust named most loved language for 8th year in row",
+"Node.js 22 released with WebSocket support",
+"VSCode's new AI pair programming feature in beta",
+"WebAssembly gaining traction for high-performance web apps",
+"New JavaScript features in ES2024 specification"
+]
+};
+
+return fallbacks[category]?.map((title, index) => ({
+title: title,
+link: `https://${source.toLowerCase()}.com/news/${index}`,
+timeAgo: 'Recently',
+isFallback: true
+})) || [];
+}
+
+function loadFallbackData() {
+allArticles = [];
+
+for (const category in NEWS_SOURCES) {
+for (const source of NEWS_SOURCES[category]) {
+const articles = fallbackArticles(source.name, source.category);
+allArticles.push(...articles.map(article => ({
+...article,
+source: source.name,
+category: source.category,
+timestamp: new Date().getTime() - Math.random() * 1000000
+})));
+}
+}
+
+renderArticles();
+}
+
+// Render articles to DOM
+function renderArticles() {
+filterArticles();
+}
+
+function filterArticles() {
+const filtered = currentCategory === 'all'
+? allArticles
+: allArticles.filter(article => article.category === currentCategory);
+
+if (filtered.length === 0) {
+articlesContainer.innerHTML = `
+<div class="loading">
+<p>No articles found for this category.</p>
+<button class="refresh-btn" onclick="loadNews()" style="margin-top: 1rem;">Try Again</button>
+</div>
+`;
+return;
+}
+
+articlesContainer.innerHTML = filtered.map(article => `
+<div class="article-card">
+<div class="article-header">
+<span class="source-tag">${article.source}</span>
+<span class="time-ago">${article.timeAgo}</span>
+</div>
+<h3 class="article-title">${article.title}</h3>
+<a href="${article.link}" class="article-link" target="_blank" rel="noopener noreferrer">
+Read full story
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+<polyline points="15 3 21 3 21 9"></polyline>
+<line x1="10" y1="14" x2="21" y2="3"></line>
+</svg>
+</a>
+</div>
+`).join('');
+}
+
+function showLoading() {
+articlesContainer.innerHTML = `
+<div class="loading">
+<div class="loading-spinner"></div>
+<p>Fetching latest headlines from ${Object.values(NEWS_SOURCES).flat().length} sources...</p>
+</div>
+`;
+}
+
+function showError(message) {
+errorMessage.textContent = message;
+errorMessage.style.display = 'block';
+}
+
+function hideError() {
+errorMessage.style.display = 'none';
+}
+
+// Utility functions
+function cleanTitle(title) {
+return title
+.replace(/<[^>]*>/g, '')
+.replace(/\[.*?\]/g, '')
+.replace(/^[^a-zA-Z0-9]+/, '')
+.trim();
+}
+
+function removeDuplicates(articles) {
+const seen = new Set();
+return articles.filter(article => {
+const key = article.title.toLowerCase();
+if (seen.has(key)) return false;
+seen.add(key);
+return true;
+});
+}
+
+// Auto-refresh every 5 minutes
+setInterval(loadNews, 5 * 60 * 1000);
+</script>
 </body>
 </html>
